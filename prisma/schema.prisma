@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String
+  username String @db.VarChar(100)
+  password String @db.MediumText
+}
+
+model Compras {
+  id         Int      @id @default(autoincrement())
+  produtosId String   @unique
+  loja       String?  @db.VarChar(120)
+  categoria  Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Produtos {
+  id         Int      @id @default(autoincrement())
+  comprasId  String
+  nome       String   @db.VarChar(120)
+  valor      Float
+  quantidade Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Categorias {
+  id        Int    @id @default(autoincrement())
+  categoria String
+}
+
+model LimitesControle {
+  id          Int   @id @default(autoincrement())
+  categoriaId Int
+  limite      Float
+}
