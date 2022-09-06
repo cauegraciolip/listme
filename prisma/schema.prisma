@@ -49,3 +49,10 @@ model LimitesControle {
   categoriaId Int
   limite      Float
 }
+
+model Cartoes {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  nome   String
+  saldo  Float
+}
