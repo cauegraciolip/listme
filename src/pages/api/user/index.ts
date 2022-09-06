@@ -11,7 +11,7 @@ export default async function userHandler(
   if (method === "GET") {
     const users = await prisma.user.findMany();
 
-    return res.status(201).json({ data: users });
+    return res.status(200).json({ data: users });
   } else if (method === "POST") {
     let { username, email, password } = req.body;
 
