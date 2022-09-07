@@ -2,6 +2,9 @@ import { TextInput } from "@mantine/core";
 import { styled } from "@stitches/react";
 import React from "react";
 
+//TYPES
+import { FormData } from "../types/InputTypes";
+
 import { Path, UseFormRegister } from "react-hook-form";
 
 const StyledInput = styled(TextInput, {
@@ -11,29 +14,18 @@ const StyledInput = styled(TextInput, {
   },
 });
 
-interface IFormValues {
-  loja: string;
-  produto: string;
-  valor: number;
-  quantidade: number;
-}
-
 type InputProps = {
   label: string;
   placeholder: string;
-  required: boolean;
-  formItem: Path<IFormValues>;
-  length: number;
-  register: UseFormRegister<IFormValues>;
+  formItem: Path<FormData>;
+  register: UseFormRegister<FormData>;
 };
 
 export const TextInputComponent = ({
   label,
   placeholder,
-  required,
   register,
   formItem,
-  length,
 }: InputProps) => (
   <StyledInput
     label={label}
@@ -41,6 +33,6 @@ export const TextInputComponent = ({
     placeholder={placeholder}
     radius="md"
     aria-label={label}
-    {...register(formItem, { required, minLength: length })}
+    {...register(formItem)}
   />
 );
