@@ -15,6 +15,12 @@ import Header from "../components/Header";
 import { IconText } from "../styles/global/iconTextStyle";
 import { Container } from "../styles/global/container";
 import { ErrorMessage } from "../styles/ErrorMessage";
+import {
+  ListaBody,
+  PrecoQtd,
+  buttonController,
+  S_Body,
+} from "../styles/registroStyle";
 
 //TYPES
 import { FormData } from "../types/InputTypes";
@@ -23,37 +29,6 @@ import { FormData } from "../types/InputTypes";
 import { BsBoxArrowLeft } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
-
-const S_Body = styled("div", {
-  backgroundColor: "#516B8A",
-});
-
-const buttonController = css({
-  backgroundColor: "#39567A",
-  position: "fixed",
-  bottom: 0,
-  left: 0,
-  width: "100%",
-  padding: "10px 0",
-  justifyContent: "center",
-  gap: 5,
-  overflow: "auto",
-  display: "flex",
-});
-
-const PrecoQtd = styled("section", {
-  display: "flex",
-  alignItems: "center",
-  gap: 10,
-});
-
-const ListaBody = styled("section", {
-  backgroundColor: "#39567A",
-  padding: 10,
-  marginTop: "10px",
-  borderRadius: 6,
-  position: "relative",
-});
 
 const validationSchema = object({
   loja: yup
