@@ -25,9 +25,16 @@ const PrecoQtd = styled("section", {
 const ListaBody = styled("section", {
   backgroundColor: "#39567A",
   padding: 10,
-  marginTop: "10px",
   borderRadius: 6,
   position: "relative",
+  marginBottom: 5,
 });
 
-export { ListaBody, PrecoQtd, buttonController, S_Body };
+const ViewProductList = styled("div", {
+  backgroundColor: "#F2F5F9",
+  padding: 10,
+  borderRadius: 6,
+  marginBottom: 2,
+});
+
+export { ListaBody, PrecoQtd, buttonController, S_Body, ViewProductList };
