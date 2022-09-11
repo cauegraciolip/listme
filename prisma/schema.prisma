@@ -44,15 +44,10 @@ model Categorias {
   categoria String
 }
 
-model LimitesControle {
-  id          Int   @id @default(autoincrement())
-  categoriaId Int
-  limite      Float
-}
-
 model Cartoes {
   id     Int    @id @default(autoincrement())
   userId Int
   nome   String
   saldo  Float
+  limite Float
 }

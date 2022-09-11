@@ -67,7 +67,6 @@ export default function Registro() {
   });
 
   let initialValue = 0;
-  let initialQtd = 0;
   const getTotalPrice = listaValues.lista.reduce(
     (prev, curr) => prev + curr.valor * curr.quantidade,
     initialValue
@@ -212,7 +211,7 @@ export default function Registro() {
               })}
             </ScrollArea>
             <div style={{ paddingTop: 5 }}>
-              Total da compra: {getTotalPrice.toFixed(2)}
+              Total da compra: R${getTotalPrice.toFixed(2)}
             </div>
           </Modal>
           <div className={buttonController()}>
