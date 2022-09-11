@@ -92,7 +92,6 @@ export default function Registro() {
 
   return (
     <S_Body>
-      <Header />
       <Container>
         <Link href="/">
           <IconText>

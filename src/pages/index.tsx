@@ -16,7 +16,6 @@ const S_Div = styled("div", {
 const Home: NextPage = () => {
   return (
     <S_Div>
-      <Header />
       <Container>
         <Link href="/registro">
           <IconText>
