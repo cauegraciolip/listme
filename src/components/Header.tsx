@@ -3,7 +3,7 @@ import logoPic from "../assets/images/small_logomobile.png";
 
 import { S_Header } from "../styles/global/headerStyle";
 
-import { Menu, ActionIcon, Button } from "@mantine/core";
+import { Menu, ActionIcon } from "@mantine/core";
 
 import { css } from "@stitches/react";
 
@@ -35,7 +35,9 @@ export default function Header() {
             <Link href="registro">
               <Menu.Item icon={<FaCartPlus />}>Inserir registro</Menu.Item>
             </Link>
-            <Menu.Item icon={<HiFolder />}>Adicionar cartão</Menu.Item>
+            <Link href="cartoes">
+              <Menu.Item icon={<HiFolder />}>Adicionar cartão</Menu.Item>
+            </Link>
             <Menu.Item icon={<AiFillSetting />}>Configurações</Menu.Item>
           </Menu.Dropdown>
         </Menu>
