@@ -4,11 +4,10 @@ import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { object } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { styled } from "@stitches/react";
 
 // COMPONENTS
-import { Button, ActionIcon, ScrollArea } from "@mantine/core";
-import { TextInputComponent } from "../components/TextInputComponent";
-import Header from "../components/Header";
+import { Button, ActionIcon, ScrollArea, TextInput } from "@mantine/core";
 import { Modal } from "@mantine/core";
 
 // STYLES
@@ -24,13 +23,22 @@ import {
 } from "../styles/registroStyle";
 
 //TYPES
-import { FormData } from "../types/InputTypes";
+import { FormTypes } from "../types/FormTypes";
 
 //ICONS
 import { BsBoxArrowLeft } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
+import { FormData } from "../types/InputTypes";
+
+//INLINE-STYLE
+const StyledInput = styled(TextInput, {
+  "& > label": {
+    paddingLeft: 10,
+    color: "#F4F4F4",
+  },
+});
 
 const validationSchema = object({
   loja: yup
@@ -54,14 +62,14 @@ const validationSchema = object({
   ),
 }).required();
 
-const defaultValues: FormData = {
+const defaultValues: FormTypes["registro"] = {
   loja: "",
   lista: [],
 };
 
 export default function Registro() {
   const [opened, setOpened] = useState(false);
-  const [listaValues, setListaValues] = useState<FormData>({
+  const [listaValues, setListaValues] = useState<FormTypes["registro"]>({
     loja: "",
     lista: [],
   });
@@ -78,7 +86,7 @@ export default function Registro() {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormTypes["registro"]>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues,
   });
@@ -108,11 +116,10 @@ export default function Registro() {
               flexDirection: "column",
             }}
           >
-            <TextInputComponent
+            <StyledInput
               label="Loja ou mercado"
               placeholder="Digite a loja ou mercado da compra"
-              formItem="loja"
-              register={register}
+              {...register("loja")}
             />
             {errors.loja && <ErrorMessage>{errors.loja?.message}</ErrorMessage>}
             <Button
@@ -137,11 +144,10 @@ export default function Registro() {
               {fields.map((field, index) => {
                 return (
                   <ListaBody key={field.id}>
-                    <TextInputComponent
+                    <StyledInput
                       label="Produto"
                       placeholder="Insira o produto selecionado"
-                      formItem={`lista.${index}.produto`}
-                      register={register}
+                      {...register(`lista.${index}.produto`)}
                     />
                     {errors?.lista?.[index]?.produto && (
                       <ErrorMessage>
@@ -150,11 +156,10 @@ export default function Registro() {
                     )}
                     <PrecoQtd>
                       <div>
-                        <TextInputComponent
+                        <StyledInput
                           label="Preço"
                           placeholder="Insira o valor do produto selecionado"
-                          formItem={`lista.${index}.valor`}
-                          register={register}
+                          {...register(`lista.${index}.valor`)}
                         />
                         {errors?.lista?.[index]?.valor && (
                           <ErrorMessage>
@@ -163,11 +168,10 @@ export default function Registro() {
                         )}
                       </div>
                       <div>
-                        <TextInputComponent
+                        <StyledInput
                           label="Quantidade"
                           placeholder="Insira a quantidade do produto selecionado"
-                          formItem={`lista.${index}.quantidade`}
-                          register={register}
+                          {...register(`lista.${index}.quantidade`)}
                         />
                         {errors?.lista?.[index]?.quantidade && (
                           <ErrorMessage>
