@@ -1,12 +1,6 @@
 import type { NextPage } from "next";
-import Link from "next/link";
-import Header from "../components/Header";
 
-import { styled, css } from "@stitches/react";
-
-import { BsFillPlusCircleFill } from "react-icons/bs";
-
-import { IconText } from "../styles/global/iconTextStyle";
+import { styled } from "@stitches/react";
 import { Container } from "../styles/global/container";
 
 const S_Div = styled("div", {
