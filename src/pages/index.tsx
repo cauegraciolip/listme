@@ -16,14 +16,7 @@ const S_Div = styled("div", {
 const Home: NextPage = () => {
   return (
     <S_Div>
-      <Container>
-        <Link href="/registro">
-          <IconText>
-            <BsFillPlusCircleFill />
-            <a>Inserir Registro</a>
-          </IconText>
-        </Link>
-      </Container>
+      <Container></Container>
     </S_Div>
   );
 };
