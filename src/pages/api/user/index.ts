@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
+import { v4 as uuid } from "uuid";
 
 import { prisma } from "../../../../prisma/clientConfig";
 import bcrypt from "bcrypt";
@@ -34,11 +35,12 @@ export default async function userHandler(
     }
 
     const hashPassword = bcrypt.hashSync(password, 10);
+    const userId = uuid();
 
     password = hashPassword;
 
     const users = await prisma.user.create({
-      data: { username, email, password },
+      data: { username, email, password, userId },
     });
 
     return res.status(201).json({ data: users });
