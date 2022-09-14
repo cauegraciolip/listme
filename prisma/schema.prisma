@@ -14,14 +14,18 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String
-  username String @db.VarChar(100)
-  password String @db.MediumText
+  id        Int      @id @default(autoincrement())
+  email     String
+  username  String   @db.VarChar(100)
+  password  String   @db.MediumText
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Compras {
   id         Int      @id @default(autoincrement())
+  userId     String
   produtosId String   @unique
   loja       String?  @db.VarChar(120)
   categoria  Int
@@ -46,7 +50,8 @@ model Categorias {
 
 model Cartoes {
   id     Int    @id @default(autoincrement())
-  userId Int
+  userId String
+  tipo   String
   nome   String
   saldo  Float
   limite Float
