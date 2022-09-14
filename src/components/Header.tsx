@@ -1,11 +1,13 @@
 import Image from "next/image";
 import logoPic from "../assets/images/small_logomobile.png";
 
+import React from "react";
+
 import { S_Header } from "../styles/global/headerStyle";
 
 import { Menu, ActionIcon } from "@mantine/core";
 
-import { css } from "@stitches/react";
+import { css, styled } from "@stitches/react";
 
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiFillSetting } from "react-icons/ai";
@@ -19,10 +21,20 @@ const displayMenu = css({
   },
 });
 
+const homePageLink = css({
+  "&:hover": {
+    cursor: "pointer",
+  },
+});
+
 export default function Header() {
   return (
     <S_Header>
-      <Image alt="list-me-logo" src={logoPic} layout="fixed" priority />
+      <Link href="/">
+        <a style={{ height: 25 }}>
+          <Image alt="list-me-logo" src={logoPic} layout="fixed" priority />
+        </a>
+      </Link>
       <div className={displayMenu()}>
         <Menu shadow="md" width={200}>
           <Menu.Target>
