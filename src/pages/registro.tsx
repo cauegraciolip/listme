@@ -1,13 +1,15 @@
+//REACT
+import { useEffect, useState } from "react";
+
 // LIBRARIES
 import Link from "next/link";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { object } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { styled } from "@stitches/react";
 
 // COMPONENTS
-import { Button, ActionIcon, ScrollArea, TextInput } from "@mantine/core";
+import { Button, ActionIcon, ScrollArea } from "@mantine/core";
 import { Modal } from "@mantine/core";
 
 // STYLES
@@ -21,30 +23,24 @@ import {
   S_Body,
   ViewProductList,
 } from "../styles/registroStyle";
+import { SelectStyled, StyledInput } from "../styles/global/textInputStyle";
 
 //TYPES
 import { FormTypes } from "../types/FormTypes";
 
 //ICONS
-import { BsBoxArrowLeft } from "react-icons/bs";
-import { AiOutlinePlus } from "react-icons/ai";
-import { FaTrash } from "react-icons/fa";
-import { useState } from "react";
-import { FormData } from "../types/InputTypes";
+import { BsBoxArrowLeft, BsCurrencyDollar } from "react-icons/bs";
 
-//INLINE-STYLE
-const StyledInput = styled(TextInput, {
-  "& > label": {
-    paddingLeft: 10,
-    color: "#F4F4F4",
-  },
-});
+import { AiOutlinePlus } from "react-icons/ai";
+import { FaTrash, FaStore } from "react-icons/fa";
+import { MdLocalGroceryStore, MdPlusOne } from "react-icons/md";
 
 const validationSchema = object({
   loja: yup
     .string()
     .required("Campo obrigatório")
     .min(3, "O campo deve ter no mínimo 3 letras"),
+  cartao: yup.string(),
   lista: yup.array().of(
     yup.object({
       produto: yup.string().required("Campo obrigatório"),
@@ -62,15 +58,14 @@ const validationSchema = object({
   ),
 }).required();
 
-const defaultValues: FormTypes["registro"] = {
-  loja: "",
-  lista: [],
-};
-
 export default function Registro() {
   const [opened, setOpened] = useState(false);
+  const [cardNames, setCardNames] = useState([
+    "-- Nenhum cartão cadastrado --",
+  ]);
   const [listaValues, setListaValues] = useState<FormTypes["registro"]>({
     loja: "",
+    cartao: "",
     lista: [],
   });
 
@@ -88,7 +83,6 @@ export default function Registro() {
     formState: { errors },
   } = useForm<FormTypes["registro"]>({
     resolver: yupResolver(validationSchema),
-    defaultValues: defaultValues,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -96,7 +90,8 @@ export default function Registro() {
     control,
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormTypes["registro"]> = (data) =>
+    console.log(data);
 
   return (
     <S_Body>
@@ -119,7 +114,17 @@ export default function Registro() {
             <StyledInput
               label="Loja ou mercado"
               placeholder="Digite a loja ou mercado da compra"
+              icon={<FaStore />}
+              withAsterisk
               {...register("loja")}
+            />
+            {errors.loja && <ErrorMessage>{errors.loja?.message}</ErrorMessage>}
+            <SelectStyled
+              data={cardNames}
+              label="Cartão utilizado"
+              placeholder="Selecione o cartão utilizado na compra"
+              withAsterisk
+              {...register("cartao")}
             />
             {errors.loja && <ErrorMessage>{errors.loja?.message}</ErrorMessage>}
             <Button
@@ -147,6 +152,8 @@ export default function Registro() {
                     <StyledInput
                       label="Produto"
                       placeholder="Insira o produto selecionado"
+                      icon={<MdLocalGroceryStore />}
+                      withAsterisk
                       {...register(`lista.${index}.produto`)}
                     />
                     {errors?.lista?.[index]?.produto && (
@@ -159,6 +166,8 @@ export default function Registro() {
                         <StyledInput
                           label="Preço"
                           placeholder="Insira o valor do produto selecionado"
+                          icon={<BsCurrencyDollar />}
+                          withAsterisk
                           {...register(`lista.${index}.valor`)}
                         />
                         {errors?.lista?.[index]?.valor && (
@@ -171,6 +180,8 @@ export default function Registro() {
                         <StyledInput
                           label="Quantidade"
                           placeholder="Insira a quantidade do produto selecionado"
+                          icon={<MdPlusOne />}
+                          withAsterisk
                           {...register(`lista.${index}.quantidade`)}
                         />
                         {errors?.lista?.[index]?.quantidade && (
