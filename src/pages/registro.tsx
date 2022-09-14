@@ -1,3 +1,6 @@
+//REACT
+import { useEffect, useState } from "react";
+
 // LIBRARIES
 import Link from "next/link";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
@@ -7,8 +10,6 @@ import * as yup from "yup";
 
 // COMPONENTS
 import { Button, ActionIcon, ScrollArea } from "@mantine/core";
-import { TextInputComponent } from "../components/TextInputComponent";
-import Header from "../components/Header";
 import { Modal } from "@mantine/core";
 
 // STYLES
@@ -22,21 +23,24 @@ import {
   S_Body,
   ViewProductList,
 } from "../styles/registroStyle";
+import { SelectStyled, StyledInput } from "../styles/global/textInputStyle";
 
 //TYPES
-import { FormData } from "../types/InputTypes";
+import { FormTypes } from "../types/FormTypes";
 
 //ICONS
-import { BsBoxArrowLeft } from "react-icons/bs";
+import { BsBoxArrowLeft, BsCurrencyDollar } from "react-icons/bs";
+
 import { AiOutlinePlus } from "react-icons/ai";
-import { FaTrash } from "react-icons/fa";
-import { useState } from "react";
+import { FaTrash, FaStore } from "react-icons/fa";
+import { MdLocalGroceryStore, MdPlusOne } from "react-icons/md";
 
 const validationSchema = object({
   loja: yup
     .string()
     .required("Campo obrigatório")
     .min(3, "O campo deve ter no mínimo 3 letras"),
+  cartao: yup.string(),
   lista: yup.array().of(
     yup.object({
       produto: yup.string().required("Campo obrigatório"),
@@ -54,15 +58,14 @@ const validationSchema = object({
   ),
 }).required();
 
-const defaultValues: FormData = {
-  loja: "",
-  lista: [],
-};
-
 export default function Registro() {
   const [opened, setOpened] = useState(false);
-  const [listaValues, setListaValues] = useState<FormData>({
+  const [cardNames, setCardNames] = useState([
+    "-- Nenhum cartão cadastrado --",
+  ]);
+  const [listaValues, setListaValues] = useState<FormTypes["registro"]>({
     loja: "",
+    cartao: "",
     lista: [],
   });
 
@@ -78,9 +81,8 @@ export default function Registro() {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormTypes["registro"]>({
     resolver: yupResolver(validationSchema),
-    defaultValues: defaultValues,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -88,11 +90,11 @@ export default function Registro() {
     control,
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormTypes["registro"]> = (data) =>
+    console.log(data);
 
   return (
     <S_Body>
-      <Header />
       <Container>
         <Link href="/">
           <IconText>
@@ -109,11 +111,20 @@ export default function Registro() {
               flexDirection: "column",
             }}
           >
-            <TextInputComponent
+            <StyledInput
               label="Loja ou mercado"
               placeholder="Digite a loja ou mercado da compra"
-              formItem="loja"
-              register={register}
+              icon={<FaStore />}
+              withAsterisk
+              {...register("loja")}
+            />
+            {errors.loja && <ErrorMessage>{errors.loja?.message}</ErrorMessage>}
+            <SelectStyled
+              data={cardNames}
+              label="Cartão utilizado"
+              placeholder="Selecione o cartão utilizado na compra"
+              withAsterisk
+              {...register("cartao")}
             />
             {errors.loja && <ErrorMessage>{errors.loja?.message}</ErrorMessage>}
             <Button
@@ -138,11 +149,12 @@ export default function Registro() {
               {fields.map((field, index) => {
                 return (
                   <ListaBody key={field.id}>
-                    <TextInputComponent
+                    <StyledInput
                       label="Produto"
                       placeholder="Insira o produto selecionado"
-                      formItem={`lista.${index}.produto`}
-                      register={register}
+                      icon={<MdLocalGroceryStore />}
+                      withAsterisk
+                      {...register(`lista.${index}.produto`)}
                     />
                     {errors?.lista?.[index]?.produto && (
                       <ErrorMessage>
@@ -151,11 +163,12 @@ export default function Registro() {
                     )}
                     <PrecoQtd>
                       <div>
-                        <TextInputComponent
+                        <StyledInput
                           label="Preço"
                           placeholder="Insira o valor do produto selecionado"
-                          formItem={`lista.${index}.valor`}
-                          register={register}
+                          icon={<BsCurrencyDollar />}
+                          withAsterisk
+                          {...register(`lista.${index}.valor`)}
                         />
                         {errors?.lista?.[index]?.valor && (
                           <ErrorMessage>
@@ -164,11 +177,12 @@ export default function Registro() {
                         )}
                       </div>
                       <div>
-                        <TextInputComponent
+                        <StyledInput
                           label="Quantidade"
                           placeholder="Insira a quantidade do produto selecionado"
-                          formItem={`lista.${index}.quantidade`}
-                          register={register}
+                          icon={<MdPlusOne />}
+                          withAsterisk
+                          {...register(`lista.${index}.quantidade`)}
                         />
                         {errors?.lista?.[index]?.quantidade && (
                           <ErrorMessage>
