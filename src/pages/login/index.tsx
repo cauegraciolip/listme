@@ -1,6 +1,9 @@
-import { Button } from "@mantine/core";
+//LIBRARIES
 import { GetServerSideProps } from "next";
 import { getSession, signIn } from "next-auth/react";
+
+//COMPONENTS
+import { Button } from "@mantine/core";
 
 export default function Login() {
   return (

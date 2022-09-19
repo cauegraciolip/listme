@@ -1,10 +1,14 @@
+//LIBRARIES
 import type { GetServerSideProps, NextPage } from "next";
-
-import { styled } from "@stitches/react";
-import { Container } from "../styles/global/container";
-import Header from "../components/Header";
 import { getSession, signOut, useSession } from "next-auth/react";
+
+//COMPONENTS
+import Header from "../components/Header";
 import { Button, Image } from "@mantine/core";
+
+//STYLES
+import { Container } from "../styles/global/container";
+import { styled } from "@stitches/react";
 
 const S_Div = styled("div", {
   background: "#516B8A",

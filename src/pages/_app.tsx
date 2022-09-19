@@ -1,9 +1,12 @@
-import type { AppProps } from "next/app";
+//LIBRARIES
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
-
 import { SessionProvider } from "next-auth/react";
 
+//TYPES
+import type { AppProps } from "next/app";
+
+//STYLES
 import { globalStyle } from "../styles/global/documentStyle";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {

@@ -1,21 +1,25 @@
-import Image from "next/image";
-import logoPic from "../assets/images/small_logomobile.png";
-
+//LIBRARIES
 import React from "react";
-
-import { S_Header } from "../styles/global/headerStyle";
-
-import { Menu, ActionIcon, Avatar, Text } from "@mantine/core";
-
+import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 import { css, styled } from "@stitches/react";
 
+//COMPONENTS
+import Image from "next/image";
+import { Menu, ActionIcon, Avatar, Text } from "@mantine/core";
+
+//STYLES
+import { S_Header } from "../styles/global/headerStyle";
+
+//ICON
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiFillSetting } from "react-icons/ai";
 import { FaCartPlus } from "react-icons/fa";
 import { ImExit } from "react-icons/im";
 import { HiFolder } from "react-icons/hi";
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+
+//LOGO
+import logoPic from "../assets/images/small_logomobile.png";
 
 const flexUserAvatar = css({
   display: "flex",
