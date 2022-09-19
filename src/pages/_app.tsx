@@ -2,11 +2,11 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 
-import Header from "../components/Header";
+import { SessionProvider } from "next-auth/react";
 
 import { globalStyle } from "../styles/global/documentStyle";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   globalStyle();
   return (
     <>
@@ -22,8 +22,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         withNormalizeCSS
         theme={{ fontFamily: "Open Sans" }}
       >
-        <Header />
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
       </MantineProvider>
     </>
   );
