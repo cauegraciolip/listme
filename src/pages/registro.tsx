@@ -1,5 +1,5 @@
 //REACT
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // LIBRARIES
 import Link from "next/link";
@@ -9,8 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 // COMPONENTS
-import { Button, ActionIcon, ScrollArea } from "@mantine/core";
-import { Modal } from "@mantine/core";
+import { Button, ActionIcon, ScrollArea, Modal } from "@mantine/core";
+import Header from "../components/Header";
 
 // STYLES
 import { IconText } from "../styles/global/iconTextStyle";
@@ -95,6 +95,7 @@ export default function Registro() {
 
   return (
     <S_Body>
+      <Header />
       <Container>
         <Link href="/">
           <IconText>

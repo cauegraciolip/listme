@@ -22,6 +22,9 @@ import { FormTypes } from "../types/FormTypes";
 import { ErrorMessage } from "../styles/ErrorMessage";
 import { tipoCartao } from "../types/FormTypes";
 
+//COMPONENTS
+import Header from "../components/Header";
+
 const validationSchema = object({
   tipo: yup.string(),
   nome: yup
@@ -54,6 +57,7 @@ export default function Cartoes() {
 
   return (
     <S_Body>
+      <Header />
       <Container>
         <Link href="/">
           <IconText>
