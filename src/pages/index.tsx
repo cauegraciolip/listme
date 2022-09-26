@@ -42,8 +42,6 @@ const Home: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
-  console.log(session);
-
   if (!session) {
     return {
       redirect: {
