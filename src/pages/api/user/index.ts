@@ -1,52 +1,58 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
-
-import { prisma } from "../../../../prisma/clientConfig";
+import { prisma } from "../../../../lib/prisma";
 import bcrypt from "bcrypt";
+
 export default async function userHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { method } = req;
 
-  if (method === "GET") {
-    const users = await prisma.user.findMany();
+  if (method === "POST") {
+    let { name, email, password } = req.body;
 
-    return res.status(200).json({ data: users });
-  } else if (method === "POST") {
-    let { username, email, password } = req.body;
-
-    const userAlreadyExist = await prisma.user.findMany({
-      where: { username: username },
-    });
-
-    const emailAlreadyExist = await prisma.user.findMany({
+    const emailAlreadyExist = await prisma.user.findUnique({
       where: { email: email },
     });
 
-    if (!!userAlreadyExist) {
-      return res
-        .status(404)
-        .json({ message: "Já existe um usuário com mesmo nome!" });
-    } else if (!!emailAlreadyExist) {
-      return res
-        .status(404)
-        .json({ message: "Já existe um usuário com mesmo e-mail!" });
+    if (!!emailAlreadyExist) {
+      return res.status(404).json({
+        success: false,
+        message: "Já existe um usuário com mesmo e-mail!",
+        complement: "Utilize outro e-mail para cadastro",
+      });
     }
 
     const hashPassword = bcrypt.hashSync(password, 10);
 
     password = hashPassword;
 
-    const users = await prisma.user.create({
-      data: { username, email, password },
+    let users = await prisma.user.create({
+      data: { email, password, name },
     });
 
-    return res.status(201).json({ data: users });
+    users.password = undefined;
+
+    return res.status(201).json({
+      data: users,
+      success: true,
+      message: "Usuário criado com sucesso",
+      complement: "Faça o login para acessar o aplicativo",
+    });
   } else if (method === "DELETE") {
     const { id } = req.body;
 
     await prisma.user.delete({ where: { id: id } });
 
     return res.status(201).json({ message: "Usuário excluído com sucesso!" });
+  } else if (method === "PUT") {
+    const { name, email } = req.body;
+
+    const user = await prisma.user.update({
+      where: { email: email },
+      data: { name: name },
+    });
+
+    return res.status(201).json({ data: "Usuário atualizado" });
   }
 }
