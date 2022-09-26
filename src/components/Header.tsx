@@ -49,8 +49,6 @@ const ShowDesktopTarget = styled("div", {
 export default function Header() {
   const { data: session } = useSession();
 
-  console.log(session?.user?.image);
-
   return (
     <S_Header>
       <Link href="/">
