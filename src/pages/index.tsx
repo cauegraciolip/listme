@@ -1,10 +1,9 @@
 //LIBRARIES
 import type { GetServerSideProps, NextPage } from "next";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 
 //COMPONENTS
 import Header from "../components/Header";
-import { Button, Image } from "@mantine/core";
 
 //STYLES
 import { Container } from "../styles/global/container";
@@ -15,26 +14,10 @@ const S_Div = styled("div", {
 });
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-
   return (
     <S_Div>
       <Header />
-      <Container>
-        <p>{session?.user?.name}</p>
-        <p>{session?.user?.email}</p>
-        {session?.user?.image && (
-          <Image
-            src={session.user.image}
-            alt="profile-photo"
-            width={88}
-            height={88}
-          />
-        )}
-        <Button onClick={() => signOut()} uppercase>
-          sair
-        </Button>
-      </Container>
+      <Container></Container>
     </S_Div>
   );
 };
