@@ -3,7 +3,7 @@ import { styled, css } from "@stitches/react";
 const S_Header = styled("header", {
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: "space-around",
   color: "#151515",
   backgroundColor: "#22436A",
   padding: 10,
