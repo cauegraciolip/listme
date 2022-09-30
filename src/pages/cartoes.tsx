@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { object } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button } from "@mantine/core";
+import { Button, Center } from "@mantine/core";
 
 //ICONS
 import { BsBoxArrowLeft, BsCurrencyDollar } from "react-icons/bs";
@@ -24,6 +24,7 @@ import { tipoCartao } from "../types/FormTypes";
 
 //COMPONENTS
 import Header from "../components/Header";
+import { useSession } from "next-auth/react";
 
 const validationSchema = object({
   tipo: yup.string(),
@@ -43,72 +44,90 @@ const defaultValues: FormTypes["cartao"] = {
 };
 
 export default function Cartoes() {
+  const { data: sessions } = useSession();
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormTypes["cartao"]>({
     resolver: yupResolver(validationSchema),
     defaultValues: defaultValues,
   });
 
-  const onSubmit: SubmitHandler<FormTypes["cartao"]> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<FormTypes["cartao"]> = (data) => {
+    fetch("/api/cartao/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data, ...sessions }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        reset();
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <S_Body>
       <Header />
-      <Container>
-        <Link href="/">
-          <IconText>
-            <BsBoxArrowLeft />
-            <a>Voltar</a>
-          </IconText>
-        </Link>
+      <div style={{ width: "100%", maxWidth: "700px", margin: "auto" }}>
+        <Container>
+          <Link href="/">
+            <IconText>
+              <BsBoxArrowLeft />
+              <a>Voltar</a>
+            </IconText>
+          </Link>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div style={{ marginBottom: 10 }}>
-            <SelectStyled
-              data={["VA", "VR", "CREDITO", "DEBITO"]}
-              placeholder="Selecione o tipo do cartão"
-              label="Tipo do cartão"
-              withAsterisk
-              icon={<AiFillCreditCard />}
-              {...register("tipo")}
-            />
-            <StyledInput
-              label="Nome do cartão"
-              placeholder="Insira o nome do cartão"
-              withAsterisk
-              icon={<MdDriveFileRenameOutline />}
-              {...register("nome")}
-            />
-            {errors.nome && <ErrorMessage>{errors.nome?.message}</ErrorMessage>}
-            <StyledInput
-              label="Saldo disponível"
-              placeholder="Insira o saldo dísponivel no cartão"
-              icon={<BsCurrencyDollar />}
-              {...register("saldo")}
-            />
-            {errors.saldo && (
-              <ErrorMessage>{errors.saldo?.message}</ErrorMessage>
-            )}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div style={{ marginBottom: 10 }}>
+              <SelectStyled
+                data={["VA", "VR", "CREDITO", "DEBITO"]}
+                placeholder="Selecione o tipo do cartão"
+                label="Tipo do cartão"
+                withAsterisk
+                icon={<AiFillCreditCard />}
+                {...register("tipo")}
+              />
+              <StyledInput
+                label="Nome do cartão"
+                placeholder="Insira o nome do cartão"
+                withAsterisk
+                icon={<MdDriveFileRenameOutline />}
+                {...register("nome")}
+              />
+              {errors.nome && (
+                <ErrorMessage>{errors.nome?.message}</ErrorMessage>
+              )}
+              <StyledInput
+                label="Saldo disponível"
+                placeholder="Insira o saldo dísponivel no cartão"
+                icon={<BsCurrencyDollar />}
+                {...register("saldo")}
+              />
+              {errors.saldo && (
+                <ErrorMessage>{errors.saldo?.message}</ErrorMessage>
+              )}
 
-            <StyledInput
-              label="Limite de uso"
-              placeholder="Insira o limite de uso desejado"
-              icon={<BsCurrencyDollar />}
-              {...register("limite")}
-            />
-            {errors.limite && (
-              <ErrorMessage>{errors.limite?.message}</ErrorMessage>
-            )}
-          </div>
-          <Button type="submit" uppercase>
-            cadastrar cartão
-          </Button>
-        </form>
-      </Container>
+              <StyledInput
+                label="Limite de uso"
+                placeholder="Insira o limite de uso desejado"
+                icon={<BsCurrencyDollar />}
+                {...register("limite")}
+              />
+              {errors.limite && (
+                <ErrorMessage>{errors.limite?.message}</ErrorMessage>
+              )}
+            </div>
+            <Button type="submit" uppercase>
+              cadastrar cartão
+            </Button>
+          </form>
+        </Container>
+      </div>
     </S_Body>
   );
 }
