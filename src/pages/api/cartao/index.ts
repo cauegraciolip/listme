@@ -1,28 +1,34 @@
-import { prisma } from "../../../../prisma/clientConfig";
+import { prisma } from "../../../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next/types";
-import { FormTypes } from "../../../types/FormTypes";
 
-export default async function cartaoHandler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req.body;
+  const { method } = req;
 
   if (method === "GET") {
-    try {
-      const cartoes = await prisma.cartoes.findMany();
-      return res.status(200).json({ cartoes: cartoes });
-    } catch (err) {
-      return res.status(500).json({ error: 500, message: "Server Error" });
-    }
-  } else if (method == "POST") {
-    const { nome, saldo, tipo, limite }: FormTypes["cartao"] = req.body;
+    const cartoes = await prisma.cartoes.findMany({
+      where: {},
+    });
+  } else if (method === "POST") {
+    const { data } = req.body;
 
-    const userId = "123456";
+    const { user } = req.body;
+
+    const findUser = await prisma.user.findUnique({
+      where: { email: user.email },
+    });
 
     try {
       const cartao = await prisma.cartoes.create({
-        data: { nome, saldo, limite, tipo, userId },
+        data: {
+          tipo: data.tipo,
+          nome: data.nome,
+          saldo: data.saldo,
+          limite: data.limite,
+          userId: findUser.id,
+        },
       });
 
       return res.status(201).json({

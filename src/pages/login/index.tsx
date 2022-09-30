@@ -2,7 +2,7 @@
 import { GetServerSideProps } from "next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getSession, signIn } from "next-auth/react";
-import { css, styled } from "@stitches/react";
+import { css } from "@stitches/react";
 import Image from "next/image";
 import Link from "next/link";
 import * as yup from "yup";
@@ -73,9 +73,9 @@ export default function Login() {
     if (!res.ok) {
       setHidden(false);
       reset();
+      setLoading(false);
     }
     router.push("/");
-    setLoading(false);
   };
 
   useEffect(() => {
