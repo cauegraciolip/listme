@@ -17,12 +17,13 @@ model Compras {
   id        String     @id @default(cuid())
   userId    String
   loja      String?    @db.VarChar(120)
-  categoria Int
+  cartaoId  String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   produtos  Produtos[]
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cartao Cartoes @relation(fields: [cartaoId], references: [id])
 }
 
 model Produtos {
@@ -38,12 +39,13 @@ model Produtos {
 }
 
 model Cartoes {
-  id     String @id @default(cuid())
-  userId String
-  tipo   String
-  nome   String
-  saldo  Float
-  limite Float
+  id      String    @id @default(cuid())
+  userId  String
+  tipo    String
+  nome    String
+  saldo   Float
+  limite  Float
+  compras Compras[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
