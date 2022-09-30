@@ -19,6 +19,7 @@ const buttonController = css({
 const PrecoQtd = styled("section", {
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
   gap: 10,
 });
 

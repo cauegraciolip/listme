@@ -3,11 +3,14 @@ import { styled, css } from "@stitches/react";
 const S_Header = styled("header", {
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-around",
+  justifyContent: "space-between",
   color: "#151515",
   backgroundColor: "#22436A",
   padding: 10,
   paddingLeft: 20,
+  "@media(min-width: 800px)": {
+    justifyContent: "space-around",
+  },
   "& > svg": {
     "@media(min-width: 768px)": {
       display: "none",

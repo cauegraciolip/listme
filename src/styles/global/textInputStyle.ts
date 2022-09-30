@@ -2,6 +2,7 @@ import { styled } from "@stitches/react";
 import { TextInput, NativeSelect, PasswordInput } from "@mantine/core";
 
 const StyledInput = styled(TextInput, {
+  width: "100%",
   marginBottom: 5,
   "& > label": {
     paddingLeft: 5,
