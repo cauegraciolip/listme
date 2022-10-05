@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 
 // LIBRARIES
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { object } from "yup";
@@ -9,7 +11,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 // COMPONENTS
-import { Button, ActionIcon, ScrollArea, Modal, Center } from "@mantine/core";
+import {
+  Button,
+  ActionIcon,
+  ScrollArea,
+  Modal,
+  Notification,
+  Center,
+} from "@mantine/core";
 import Header from "../components/Header";
 
 // STYLES
@@ -23,26 +32,28 @@ import {
   S_Body,
   ViewProductList,
 } from "../styles/registroStyle";
-import { SelectStyled, StyledInput } from "../styles/global/textInputStyle";
+import {
+  SelectStyled,
+  StyledInput,
+  SelectProper,
+} from "../styles/global/textInputStyle";
 
 //TYPES
 import { FormTypes } from "../types/FormTypes";
 
 //ICONS
 import { BsBoxArrowLeft, BsCurrencyDollar } from "react-icons/bs";
-
+import { IconCheck, IconX } from "@tabler/icons";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaTrash, FaStore } from "react-icons/fa";
 import { MdLocalGroceryStore, MdPlusOne } from "react-icons/md";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 const validationSchema = object({
   loja: yup
     .string()
     .required("Campo obrigatório")
     .min(3, "O campo deve ter no mínimo 3 letras"),
-  cartao: yup.string(),
+  cartao: yup.string().required("Um cartão deve ser selecionado"),
   lista: yup.array().of(
     yup.object({
       produto: yup.string().required("Campo obrigatório"),
@@ -64,6 +75,13 @@ export default function Registro() {
   const { data: sessions } = useSession();
   const routes = useRouter();
   const [opened, setOpened] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [response, setResponse] = useState({
+    title: "Podemos ir embora!",
+    message: "Compra finalizada com successo",
+    success: false,
+  });
+  const [hidden, setHidden] = useState(true);
   const [cardNames, setCardNames] = useState([
     "-- Nenhum cartão cadastrado --",
   ]);
@@ -103,10 +121,19 @@ export default function Registro() {
     }
   }, [routes, sessions]);
 
+  useEffect(() => {
+    if (!hidden) {
+      setTimeout(() => {
+        setHidden(true);
+      }, 4000);
+    }
+  }, [hidden]);
+
   const {
     register,
     control,
     handleSubmit,
+    reset,
     getValues,
     formState: { errors },
   } = useForm<FormTypes["registro"]>({
@@ -118,11 +145,49 @@ export default function Registro() {
     control,
   });
 
-  const onSubmit: SubmitHandler<FormTypes["registro"]> = (data) =>
-    console.log(data);
+  console.log(getTotalPrice);
+
+  const onSubmit: SubmitHandler<FormTypes["registro"]> = (data) => {
+    setSending(true);
+    fetch("/api/registro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...data,
+        user: sessions,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setResponse({
+            title: data.title,
+            message: data.message,
+            success: data.success,
+          });
+          setSending(false);
+          reset();
+          setHidden(!hidden);
+        } else {
+          setSending(false);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <S_Body>
+      <Center>
+        <Notification
+          icon={<IconCheck size={18} />}
+          color={response.success ? "teal" : "red"}
+          title={response.title}
+          hidden={hidden}
+          style={{ position: "absolute", top: 20 }}
+        >
+          {response.message}
+        </Notification>
+      </Center>
       <Header />
       <div style={{ width: "100%", maxWidth: "700px", margin: "auto" }}>
         <Container>
@@ -275,7 +340,13 @@ export default function Registro() {
               >
                 visualizar lista
               </Button>
-              <Button size="xs" color="green" uppercase type="submit">
+              <Button
+                size="xs"
+                color="green"
+                uppercase
+                type="submit"
+                loading={sending}
+              >
                 finalizar compra
               </Button>
             </div>
