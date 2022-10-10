@@ -139,7 +139,7 @@ export default function Login() {
             entrar
           </Button>
         </form>
-        <Text size="xs" color="gray">
+        {/* <Text size="xs" color="gray">
           Ou entre com suas redes sociais
         </Text>
         <div
@@ -170,7 +170,7 @@ export default function Login() {
               Google
             </Text>
           </Button>
-        </div>
+        </div> */}
         <Center style={{ paddingTop: 45 }}>
           <div
             style={{ textAlign: "center", fontSize: "12px", color: "#F8F8F8" }}
