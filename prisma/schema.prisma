@@ -23,7 +23,7 @@ model Compras {
   updatedAt DateTime   @updatedAt
   produtos  Produtos[]
 
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User    @relation(fields: [userId], references: [id])
   cartao Cartoes @relation(fields: [cartaoId], references: [id])
 }
 
@@ -48,7 +48,7 @@ model Cartoes {
   limite  Float
   compras Compras[]
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Account {
