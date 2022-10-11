@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
@@ -22,9 +19,8 @@ model Compras {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   produtos  Produtos[]
-
-  user   User    @relation(fields: [userId], references: [id])
-  cartao Cartoes @relation(fields: [cartaoId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+  cartao    Cartoes    @relation(fields: [cartaoId], references: [id])
 }
 
 model Produtos {
@@ -35,8 +31,7 @@ model Produtos {
   quantidade Float
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  compras Compras @relation(fields: [comprasId], references: [id], onDelete: Cascade)
+  compras    Compras  @relation(fields: [comprasId], references: [id], onDelete: Cascade)
 }
 
 model Cartoes {
@@ -47,8 +42,7 @@ model Cartoes {
   saldo   Float
   limite  Float
   compras Compras[]
-
-  user User @relation(fields: [userId], references: [id])
+  user    User      @relation(fields: [userId], references: [id])
 }
 
 model Account {
@@ -64,8 +58,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
