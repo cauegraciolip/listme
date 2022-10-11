@@ -11,16 +11,14 @@ export default async function handleCompras(
     where: { email: user.email },
   });
 
-  const findCompras = await prisma.compras.findMany({
-    where: { userId: findUser.id },
-    include: {
-      produtos: true,
-    },
-  });
+  const actualDateYear = new Date(new Date().getFullYear(), 0, 1);
 
-  for (let index in findCompras) {
-    console.log(findCompras[index]);
-  }
+  const findCompras = await prisma.compras.findMany({
+    where: {
+      AND: [{ userId: findUser.id }, { createdAt: { gte: actualDateYear } }],
+    },
+    orderBy: [{ createdAt: "asc" }],
+  });
 
   return res.status(201).json({ data: findCompras });
 }
