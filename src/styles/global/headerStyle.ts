@@ -8,6 +8,9 @@ const S_Header = styled("header", {
   backgroundColor: "#22436A",
   padding: 10,
   paddingLeft: 20,
+  "@media(min-width: 800px)": {
+    justifyContent: "space-around",
+  },
   "& > svg": {
     "@media(min-width: 768px)": {
       display: "none",

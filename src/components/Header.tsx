@@ -2,14 +2,18 @@
 import React from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { css, styled } from "@stitches/react";
 
 //COMPONENTS
 import Image from "next/image";
-import { Menu, ActionIcon, Avatar, Text } from "@mantine/core";
+import { Menu, ActionIcon, Avatar, Text, Center } from "@mantine/core";
 
 //STYLES
 import { S_Header } from "../styles/global/headerStyle";
+import {
+  flexUserAvatar,
+  ShowDesktopTarget,
+  ShowMobileTarget,
+} from "../styles/Header";
 
 //ICON
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -20,31 +24,6 @@ import { HiFolder } from "react-icons/hi";
 
 //LOGO
 import logoPic from "../assets/images/small_logomobile.png";
-
-const flexUserAvatar = css({
-  display: "flex",
-  marginLeft: 10,
-  alignItems: "center",
-  gap: 10,
-  "&:hover": {
-    cursor: "pointer",
-  },
-});
-
-const ShowMobileTarget = styled("div", {
-  "@media (min-width: 768px)": {
-    display: "none",
-  },
-});
-
-const ShowDesktopTarget = styled("div", {
-  "@media (min-width: 768px)": {
-    display: "block",
-  },
-  "@media (max-width: 767px)": {
-    display: "none",
-  },
-});
 
 export default function Header() {
   const { data: session } = useSession();

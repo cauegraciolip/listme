@@ -2,7 +2,7 @@
 import { GetServerSideProps } from "next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getSession, signIn } from "next-auth/react";
-import { css, styled } from "@stitches/react";
+import { css } from "@stitches/react";
 import Image from "next/image";
 import Link from "next/link";
 import * as yup from "yup";
@@ -73,9 +73,9 @@ export default function Login() {
     if (!res.ok) {
       setHidden(false);
       reset();
+      setLoading(false);
     }
     router.push("/");
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export default function Login() {
             entrar
           </Button>
         </form>
-        <Text size="xs" color="gray">
+        {/* <Text size="xs" color="gray">
           Ou entre com suas redes sociais
         </Text>
         <div
@@ -170,7 +170,7 @@ export default function Login() {
               Google
             </Text>
           </Button>
-        </div>
+        </div> */}
         <Center style={{ paddingTop: 45 }}>
           <div
             style={{ textAlign: "center", fontSize: "12px", color: "#F8F8F8" }}

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
@@ -17,35 +14,35 @@ model Compras {
   id        String     @id @default(cuid())
   userId    String
   loja      String?    @db.VarChar(120)
-  categoria Int
+  cartaoId  String
+  total     Float
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   produtos  Produtos[]
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id])
+  cartao    Cartoes    @relation(fields: [cartaoId], references: [id])
 }
 
 model Produtos {
   id         String   @id @default(cuid())
   comprasId  String
   nome       String   @db.VarChar(120)
-  valor      Float
-  quantidade Int
+  valor      Float?
+  quantidade Float
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  compras Compras @relation(fields: [comprasId], references: [id], onDelete: Cascade)
+  compras    Compras  @relation(fields: [comprasId], references: [id], onDelete: Cascade)
 }
 
 model Cartoes {
-  id     String @id @default(cuid())
-  userId String
-  tipo   String
-  nome   String
-  saldo  Float
-  limite Float
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String    @id @default(cuid())
+  userId  String
+  tipo    String
+  nome    String
+  saldo   Float
+  limite  Float
+  compras Compras[]
+  user    User      @relation(fields: [userId], references: [id])
 }
 
 model Account {
@@ -61,8 +58,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
