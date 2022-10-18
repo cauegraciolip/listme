@@ -20,11 +20,14 @@ export const authOptions = {
       name: "credentials",
       credentials: {},
       async authorize(credentials) {
-        const res = await fetch("http://localhost:3000/api/user/authenticate", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
+        const res = await fetch(
+          "https://listme.vercel.app/api/user/authenticate",
+          {
+            method: "POST",
+            body: JSON.stringify(credentials),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
         const data = await res.json();
 
         if (!data.success) {
