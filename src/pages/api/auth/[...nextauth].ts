@@ -21,7 +21,7 @@ export const authOptions = {
       credentials: {},
       async authorize(credentials) {
         const res = await fetch(
-          "https://listme.vercel.app/api/user/authenticate",
+          "https://listme-jrz7u49it-cauegraciolip.vercel.app/api/user/authenticate",
           {
             method: "POST",
             body: JSON.stringify(credentials),
